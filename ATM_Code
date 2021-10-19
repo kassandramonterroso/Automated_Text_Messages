@@ -1,0 +1,42 @@
+""" Install Twilio and Schedule libraries """
+
+pip install twilio
+pip install schedule 
+
+
+""" Import client authentication and python modules """
+
+from twilio.rest import Client
+import random
+import schedule
+import time
+
+
+""" Create list of messages and cellphone numbers to send texts to """
+messages = ["I made an automated text program!!", "I automated this text to you!"] 
+
+numbers = ["+123456789", "+987654321"] ## Add numbers to send texts to 
+
+
+""" Setting random messages to be sent to the numbers above, with twilio API """
+
+def sending():
+  acc_num = "1a2b3c4d5e6f7g8h9i" ## Twilio account number
+
+  token_num = "9i8h7g6f5e4d3c2b1a" ## Token number is accessed through Twilio
+
+  client = Client(acc_num, token_num)
+
+  client.messages.create(
+    to = random.choice(numbers), 
+    from_= "+123456789", ## Phone number Twilio send the text messages from 
+    body = random.choice(messages)
+    )
+
+
+""" Setting timed schedule of sending messages """
+schedule.every().day.at("20:42").do(sending)
+
+while True:
+    schedule.run_pending()
+    time.sleep(2) ## Delaying function for 2 seconds
